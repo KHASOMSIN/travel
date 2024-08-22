@@ -18,6 +18,9 @@ const provinceDetails = require("./management/provincesDetail");
 const placeDetail = require("./management/placeDetail");
 const review = require("./management/review");
 const reviewPlace = require("./management/reviewPlace");
+const getUserAccount = require("./profile/getUserbyemail");
+const getProvincesImage = require("./management/getProvincesImage");
+// const insertData = require("./management/insertData");
 
 const port = process.env.PORT || 3000;
 
@@ -43,6 +46,9 @@ app.use("/travel", placeDetail);
 app.use("/travel", provinceDetails);
 app.use("/travel", review);
 app.use("/travel", reviewPlace);
+app.use("/user", getUserAccount);
+app.use("/travel", getProvincesImage);
+// app.use("/insert", insertData);
 
 // Example route to fetch users from the database
 app.get("/users", (req, res) => {

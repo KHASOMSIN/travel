@@ -9,6 +9,14 @@ const pool = mysql.createPool({
   port: 3306,
 });
 
+// const pool = mysql.createPool({
+//   host: "sql12.freesqldatabase.com", // Corrected to lowercase 'host'
+//   user: "sql12727086", // Corrected key 'user'
+//   password: "ZpJRcCqetw", // Corrected key 'password'
+//   database: "sql12727086", // Corrected key 'database'
+//   port: 3306, // Corrected key 'port'
+// });
+
 // Create a promise-based wrapper around the pool
 const promisePool = pool.promise();
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("../database/dbConnection");
+const db = require("../database/dbConnection"); // Ensure this points to your database connection
 const router = express.Router();
 
 // Get user profile details
@@ -7,22 +7,22 @@ router.get("/get/profile/:userId", (req, res) => {
   const userId = req.params.userId;
 
   const query = `
-        SELECT 
-            u.fullname AS name,
-            u.email,
-            p.gender,
-            p.dob,
-            p.phone_number AS phone,
-            p.profile
-        FROM 
-            users u
-        JOIN 
-            user_profile p 
-        ON 
-            u.userId = p.userId
-        WHERE 
-            u.userId = ?;
-    `;
+    SELECT 
+        u.fullname AS name,
+        u.email,
+        p.gender,
+        p.dob,
+        p.phone_number AS phone,
+        p.profile
+    FROM 
+        users u
+    LEFT JOIN 
+        user_profile p 
+    ON 
+        u.userId = p.userId
+    WHERE 
+        u.userId = ?;
+  `;
 
   db.query(query, [userId], (err, results) => {
     if (err) {
