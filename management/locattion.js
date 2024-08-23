@@ -24,12 +24,10 @@ router.post("/addLocation", (req, res) => {
       console.log(
         "Location inserted successfully with ID: " + results.insertId
       );
-      res
-        .status(200)
-        .json({
-          message: "Location inserted successfully",
-          locationId: results.insertId,
-        });
+      res.status(200).json({
+        message: "Location inserted successfully",
+        locationId: results.insertId,
+      });
     }
   );
 });
@@ -76,6 +74,29 @@ router.get("/locations/:id", (req, res) => {
 
     console.log("Location retrieved successfully");
     res.status(200).json(results[0]); // Return the first (and only) result
+  });
+});
+
+router.get("/locations/province/:provinceId", (req, res) => {
+  const provinceId = req.params.provinceId;
+  // SQL query to select locations by provinceId
+  const query = `SELECT * FROM location WHERE provinceId = ?`;
+  // Execute the query
+  db.query(query, [provinceId], (err, results) => {
+    if (err) {
+      console.error("Error fetching data: " + err.stack);
+      return res
+        .status(500)
+        .json({ message: "Error fetching data", error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        message: `No locations found for province with ID ${provinceId}`,
+      });
+    }
+    console.log("Locations retrieved successfully");
+    res.status(200).json(results);
   });
 });
 
