@@ -39,12 +39,10 @@ router.post("/addPlace", (req, res) => {
           .json({ message: "Error inserting data", error: err });
       }
       console.log("Place inserted successfully with ID: " + results.insertId);
-      res
-        .status(200)
-        .json({
-          message: "Place inserted successfully",
-          placeId: results.insertId,
-        });
+      res.status(200).json({
+        message: "Place inserted successfully",
+        placeId: results.insertId,
+      });
     }
   );
 });
@@ -87,6 +85,33 @@ router.get("/places/:id", (req, res) => {
 
     console.log("Place retrieved successfully");
     res.status(200).json(results[0]);
+  });
+});
+
+// Route to get places by provinceId
+router.get("/places/byProvince/:provinceId", (req, res) => {
+  const provinceId = req.params.provinceId;
+
+  const query = `SELECT * FROM place WHERE provinceId = ?`;
+
+  db.query(query, [provinceId], (err, results) => {
+    if (err) {
+      console.error("Error fetching data: " + err.stack);
+      return res
+        .status(500)
+        .json({ message: "Error fetching data", error: err });
+    }
+
+    if (results.length === 0) {
+      return res
+        .status(404)
+        .json({
+          message: `No places found for province with ID ${provinceId}`,
+        });
+    }
+
+    console.log("Places retrieved successfully");
+    res.status(200).json(results);
   });
 });
 
