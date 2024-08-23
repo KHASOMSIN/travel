@@ -88,11 +88,15 @@ router.get("/places/:id", (req, res) => {
   });
 });
 
-// Route to get places by provinceId
-router.get("/places/byProvince/:provinceId", (req, res) => {
+router.get("/places/byprovince/:provinceId", (req, res) => {
   const provinceId = req.params.provinceId;
 
-  const query = `SELECT * FROM place WHERE provinceId = ?`;
+  const query = `
+    SELECT place.*, provinces.provinceName 
+    FROM place 
+    INNER JOIN provinces ON place.provinceId = provinces.provinceId 
+    WHERE place.provinceId = ?
+  `;
 
   db.query(query, [provinceId], (err, results) => {
     if (err) {
@@ -103,11 +107,9 @@ router.get("/places/byProvince/:provinceId", (req, res) => {
     }
 
     if (results.length === 0) {
-      return res
-        .status(404)
-        .json({
-          message: `No places found for province with ID ${provinceId}`,
-        });
+      return res.status(404).json({
+        message: `No places found for province with ID ${provinceId}`,
+      });
     }
 
     console.log("Places retrieved successfully");
