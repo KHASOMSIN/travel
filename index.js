@@ -23,6 +23,7 @@ const getProvincesImage = require("./management/getProvincesImage");
 const search = require("./management/search");
 // const search = require("./management/search");
 const insertData = require("./management/insertData");
+const placeImage = require("./management/placeImage");
 
 const port = process.env.PORT || 3000;
 
@@ -52,6 +53,7 @@ app.use("/user", getUserAccount);
 app.use("/travel", getProvincesImage);
 app.use("/travel", search);
 app.use("/insert", insertData);
+app.use("/travel", placeImage);
 
 // Example route to fetch users from the database
 app.get("/users", (req, res) => {
