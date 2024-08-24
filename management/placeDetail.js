@@ -49,7 +49,11 @@ router.post("/addPlace", (req, res) => {
 
 // Route to get all places
 router.get("/places", (req, res) => {
-  const query = `SELECT * FROM place`;
+  const query = `
+    SELECT place.*, provinces.provinceName 
+    FROM place 
+    INNER JOIN provinces ON place.provinceId = provinces.provinceId
+  `;
 
   db.query(query, (err, results) => {
     if (err) {
@@ -58,6 +62,7 @@ router.get("/places", (req, res) => {
         .status(500)
         .json({ message: "Error fetching data", error: err });
     }
+
     console.log("Places retrieved successfully");
     res.status(200).json(results);
   });
@@ -67,7 +72,12 @@ router.get("/places", (req, res) => {
 router.get("/places/:id", (req, res) => {
   const placeId = req.params.id;
 
-  const query = `SELECT * FROM place WHERE placeId = ?`;
+  const query = `
+    SELECT place.*, provinces.provinceName 
+    FROM place 
+    INNER JOIN provinces ON place.provinceId = provinces.provinceId 
+    WHERE place.placeId = ?
+  `;
 
   db.query(query, [placeId], (err, results) => {
     if (err) {
