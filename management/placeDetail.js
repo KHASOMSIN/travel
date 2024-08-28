@@ -126,5 +126,34 @@ router.get("/places/byprovince/:provinceId", (req, res) => {
     res.status(200).json(results);
   });
 });
+// Route to get places by categoryId
+router.get("/places/bycategory/:categoryId", (req, res) => {
+  const categoryId = req.params.categoryId;
+
+  const query = `
+    SELECT place.*, provinces.provinceName 
+    FROM place 
+    INNER JOIN provinces ON place.provinceId = provinces.provinceId 
+    WHERE place.categoryId = ?
+  `;
+
+  db.query(query, [categoryId], (err, results) => {
+    if (err) {
+      console.error("Error fetching data: " + err.stack);
+      return res
+        .status(500)
+        .json({ message: "Error fetching data", error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({
+        message: `No places found for category with ID ${categoryId}`,
+      });
+    }
+
+    console.log("Places retrieved successfully");
+    res.status(200).json(results);
+  });
+});
 
 module.exports = router;
