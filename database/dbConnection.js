@@ -10,9 +10,9 @@ const mysql = require("mysql2");
 
 const pool = mysql.createPool({
   host: "sql12.freesqldatabase.com", // Corrected to lowercase 'host'
-  user: "sql12727541", // Corrected key 'user'
-  password: "e4t6bTfuGv", // Corrected key 'password'
-  database: "sql12727541", // Corrected key 'database'
+  user: "sql12729425", // Corrected key 'user'
+  password: "N97rFDu1yr", // Corrected key 'password'
+  database: "sql12729425", // Corrected key 'database'
   port: 3306, // Corrected key 'port'
 });
 
